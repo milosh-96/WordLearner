@@ -1,0 +1,38 @@
+﻿@page "/"
+@using WordLearner.Application.Services
+@using WordLearner.Domain.Entities
+@inject IWordService wordService
+@rendermode InteractiveServer
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+
+<article>
+    <p>
+        What this word means?
+    </p>
+
+    @if(Word != null)
+    {
+        <h3>@Word.Content</h3>
+        <hr />
+        <button @onclick="GetWord">Get Another</button>
+    }
+    else
+    {
+        <p>This is odd. Anyway, click to get your word.</p>
+        <button @onclick="GetWord">Get Word!</button>
+    }
+</article>
+
+
+
+@code {
+    public Word? Word { get; set; }
+
+    public void GetWord()
+    {
+        Word = wordService.GetRandomWord();
+
+    }
+}
