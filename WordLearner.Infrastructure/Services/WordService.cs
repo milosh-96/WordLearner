@@ -29,9 +29,14 @@ namespace WordLearner.Infrastructure.Services
             var ids = _context.Words.Select(x=>x.Id).ToList(); // take the count off source words //
             int randomIdIndex = new Random().Next(0,(ids.Count-1)); // generate random index, -1 to prevent out of range
 
-            var translation = _context.Translations.Include(x=>x.Language).Include(x=>x.TargetWord).Where(x=>x.Language==language).FirstOrDefault(x => x.Id == ids[randomIdIndex]); // pick all words from translations of selected language and use random index //
+            var translations = _context.Translations
+                .Include(x => x.Language)
+                .Include(x => x.TargetWord)
+                .Where(x=>x.Language==language)
+                .ToList();
 
-            return translation;
+           return translations[randomIdIndex]; // pick all words from translations of selected language and use random index //
+
         }
 
         public IEnumerable<Word> GetWords()

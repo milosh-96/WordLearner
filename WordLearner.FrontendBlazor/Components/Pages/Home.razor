@@ -33,16 +33,21 @@
         <p>This is odd. Anyway, click to get your word.</p>
         <button @onclick="GetWord">Get Word!</button>
     }
+    <hr />
+    <select @onchange="(ChangeEventArgs e)=>{Language = (string)e.Value;}">
+        <option value="de">German</option>
+        <option value="es">Spanish</option>
+    </select>
 </article>
 
 
 
 @code {
     public Translation? Word { get; set; }
-
+    public string Language { get; set; } = "de";
     public void GetWord()
     {
-        Word = wordService.GetRandomWord("de");
+        Word = wordService.GetRandomWord(Language);
 
     }
 }
