@@ -1,5 +1,6 @@
-using WordLearner.Application.Services;
+using WordLearner.Domain.Services;
 using WordLearner.FrontendBlazor.Components;
+using WordLearner.Infrastructure;
 using WordLearner.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,7 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddScoped<IWordService, WordService>();
+
+builder.Services.AddInfrastructureServices(builder.Configuration);
 
 var app = builder.Build();
 

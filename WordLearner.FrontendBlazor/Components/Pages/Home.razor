@@ -1,6 +1,6 @@
 ﻿@page "/"
-@using WordLearner.Application.Services
-@using WordLearner.Domain.Entities
+@using WordLearner.Domain.Services
+@using WordLearner.Domain.WordAggregate
 @inject IWordService wordService
 @rendermode InteractiveServer
 <PageTitle>Home</PageTitle>
@@ -17,7 +17,14 @@
     }
     @if(Word != null)
     {
-        <h3>@Word.Content</h3>
+        <details>
+            <summary>
+                <h3>@Word.Content</h3>
+            </summary>
+            <p>
+                @Word.TargetWord.Content
+            </p>
+        </details>
         <hr />
         <button @onclick="GetWord">Get Another</button>
     }
@@ -31,11 +38,11 @@
 
 
 @code {
-    public Word? Word { get; set; }
+    public Translation? Word { get; set; }
 
     public void GetWord()
     {
-        Word = wordService.GetRandomWord();
+        Word = wordService.GetRandomWord("de");
 
     }
 }

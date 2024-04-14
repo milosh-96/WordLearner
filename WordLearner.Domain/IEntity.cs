@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WordLearner.Domain.Entities
+namespace WordLearner.Domain
 {
     public interface IEntity<T>
     {

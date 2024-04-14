@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WordLearner.Domain.Entities;
+using WordLearner.Domain.WordAggregate;
 
-namespace WordLearner.Application.Services
+namespace WordLearner.Domain.Services
 {
     public interface IWordService
     {
         public IEnumerable<Word> GetWords();
-        public Word GetRandomWord();
+        public Translation GetRandomWord(string languageCode);
     }
 }
