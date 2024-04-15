@@ -1,31 +1,36 @@
 ﻿@page "/"
+@using WordLearner.Domain
 @using WordLearner.Domain.Services
 @using WordLearner.Domain.WordAggregate
 @inject IWordService wordService
+@inject ILanguageService languageService
 @rendermode InteractiveServer
-<PageTitle>Home</PageTitle>
-
-<h1>Hello, world!</h1>
+<PageTitle>Home - Word Learn</PageTitle>
 
 <article>
-    <p>
+    <h2>Welcome!</h2>
+    <div>
         What this word means?
-    </p>
+    </div>
 
     @{
        // TODO: create a component for getting a new word
     }
     @if(Word != null)
     {
-        <details>
+        <p style="display:block">
+            <em>click on word to check answer; click again to hide answer</em>
+        </p>
+        <details style="padding-inline:32px;min-height:50px">
             <summary>
-                <h3>@Word.Content</h3>
+                <h3 style="margin:0">@Word.Content</h3>
             </summary>
-            <p>
+            <hr />
+            <p style="font-size:1.2rem">
                 @Word.TargetWord.Content
             </p>
+            
         </details>
-        <hr />
         <button @onclick="GetWord">Get Another</button>
     }
     else
@@ -34,20 +39,47 @@
         <button @onclick="GetWord">Get Word!</button>
     }
     <hr />
-    <select @onchange="(ChangeEventArgs e)=>{Language = (string)e.Value;}">
-        <option value="de">German</option>
-        <option value="es">Spanish</option>
-    </select>
+    
 </article>
 
-
+<aside>
+    <label>Choose language</label>
+    @if(Languages.Count == 0)
+    {
+        <p>Please wait...</p>
+    }
+    else
+    {
+        <select @onchange="ChangeLanguage">
+            @foreach(var language in Languages)
+            {
+                <option value="@language.Code">@language.Name</option>
+            }
+        </select>
+    }
+</aside>
 
 @code {
+    public List<Language> Languages { get; set; } = new List<Language>();
     public Translation? Word { get; set; }
     public string Language { get; set; } = "de";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(!firstRender) { return; }
+        Word = wordService.GetRandomWord(Language);
+        Languages = languageService.GetLanguagesWithout("en").ToList();
+        this.StateHasChanged();
+    }
     public void GetWord()
     {
         Word = wordService.GetRandomWord(Language);
 
+    }
+
+    public void ChangeLanguage(ChangeEventArgs e)
+    {
+        this.Language = (string)e.Value;
+        GetWord();
     }
 }

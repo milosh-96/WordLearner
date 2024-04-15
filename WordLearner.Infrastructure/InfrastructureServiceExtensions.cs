@@ -21,10 +21,11 @@ namespace WordLearner.Infrastructure
     )
         {
             string? connectionString = config.GetConnectionString("PostgresqlConnection");
-            services.AddDbContext<ApplicationDbContext>(options =>
+            services.AddDbContextFactory<ApplicationDbContext>(options =>
              options.UseNpgsql(connectionString));
 
             services.AddScoped<IWordService, WordService>();
+            services.AddScoped<ILanguageService, LanguageService>();
 
             return services;
         }

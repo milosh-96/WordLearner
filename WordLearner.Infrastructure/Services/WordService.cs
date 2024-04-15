@@ -12,24 +12,25 @@ namespace WordLearner.Infrastructure.Services
 {
     public class WordService : IWordService
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IDbContextFactory<ApplicationDbContext> _dbContextFactory;
 
-        public WordService(ApplicationDbContext context)
+        public WordService(IDbContextFactory<ApplicationDbContext> dbContextFactory)
         {
-            _context = context;
+            _dbContextFactory = dbContextFactory;
         }
 
         public Translation GetRandomWord(string languageCode)
         {
-            var language = _context.Languages.Where(x => x.Code == languageCode).FirstOrDefault();
+            var context = _dbContextFactory.CreateDbContext();
+            var language = context.Languages.Where(x => x.Code == languageCode).FirstOrDefault();
             if (language == null)
             {
                 throw new ArgumentException($"A language with code {languageCode} could not be found.");
             }
-            var ids = _context.Words.Select(x=>x.Id).ToList(); // take the count off source words //
+            var ids = context.Words.Select(x=>x.Id).ToList(); // take the count off source words //
             int randomIdIndex = new Random().Next(0,(ids.Count-1)); // generate random index, -1 to prevent out of range
 
-            var translations = _context.Translations
+            var translations = context.Translations
                 .Include(x => x.Language)
                 .Include(x => x.TargetWord)
                 .Where(x=>x.Language==language)
@@ -41,7 +42,8 @@ namespace WordLearner.Infrastructure.Services
 
         public IEnumerable<Word> GetWords()
         {
-            return _context.Words.ToList();
+            var context = _dbContextFactory.CreateDbContext();
+            return context.Words.ToList();
         }
     }
 }
