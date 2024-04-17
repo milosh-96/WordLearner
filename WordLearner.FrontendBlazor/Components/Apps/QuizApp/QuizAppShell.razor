@@ -1,0 +1,67 @@
+﻿@using WordLearner.Domain
+@using WordLearner.Domain.Services
+@using WordLearner.Domain.WordAggregate
+@inject IWordService wordService
+@inject IQuestionService questionService
+@rendermode InteractiveServer
+
+<section>
+    <h3 class="sr-only">Word Game</h3>
+    <div>
+        What this word means?
+    </div>
+
+    @{
+        // TODO: create a component for getting a new word
+    }
+    @if (Word != null)
+    {
+        <p style="display:block">
+            <em>click on word to check answer; click again to hide answer</em>
+        </p>
+        <QuestionItem Question="Question"></QuestionItem>
+        <GetItemButton OnButtonClick="GetWord" Text="Get Another"></GetItemButton>
+    }
+    else
+    {
+        <p>This is odd. Anyway, click to get your word.</p>
+        <GetItemButton OnButtonClick="GetWord" Text="Get"></GetItemButton>
+    }
+    <hr />
+
+
+    <aside>
+        <LanguageSelector OnLanguageChange="ChangeLanguage"></LanguageSelector>
+    </aside>
+</section>
+
+
+@code {
+    public List<Language> Languages { get; set; } = new List<Language>();
+
+    public string Language { get; set; } = "de";
+
+
+    public Translation? Word { get; set; }
+    public Question? Question { get; set; }
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender) { return; }
+        GetWord();
+        this.StateHasChanged();
+    }
+    public void GetWord()
+    {
+        Word = wordService.GetRandomWord(Language);
+        var choices = wordService.GetWords().OrderBy(r => Guid.NewGuid()).Take(3).Select(x=>x.Content).ToList();
+        Question = questionService.GenerateQuestion(Word.Content, Word.TargetWord.Content, choices);
+    }
+
+    public void ChangeLanguage(ChangeEventArgs e)
+    {
+        this.Language = (string)e.Value;
+        GetWord();
+    }
+}

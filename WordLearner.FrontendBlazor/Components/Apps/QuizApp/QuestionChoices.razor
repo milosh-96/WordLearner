@@ -1,0 +1,15 @@
+﻿@using WordLearner.Domain.WordAggregate
+@if(Question != null)
+{
+    <div style="display:flex;column-gap:16px">
+        @foreach (var choice in Question.Choices)
+        {
+            <QuestionChoiceItem Choice="@choice" Choices="Question.Choices" CorrectChoiceIndex="Question.CorrectChoiceIndex"></QuestionChoiceItem>
+        }
+    </div>
+}
+
+@code {
+        [Parameter]
+        public Question Question { get; set; }
+}

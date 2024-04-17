@@ -1,0 +1,41 @@
+﻿@using WordLearner.Domain
+@using WordLearner.Domain.Services
+@inject ILanguageService languageService
+
+<section>
+    <h3>Choose language</h3>
+    @if (Languages.Count == 0)
+    {
+        <p>Please wait...</p>
+    }
+    else
+    {
+        <select @onchange="LanguageChanged">
+            @foreach (var language in Languages)
+            {
+                <option value="@language.Code">@language.Name</option>
+            }
+        </select>
+    }
+</section>
+
+@code {
+    // events //
+    [Parameter]
+    public EventCallback<ChangeEventArgs> OnLanguageChange { get; set; }
+
+    public List<Language> Languages { get; set; } = new List<Language>();
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender) { return; }
+        Languages = languageService.GetLanguagesWithout("en").ToList();
+        this.StateHasChanged();
+    }
+
+    public void LanguageChanged(ChangeEventArgs e)
+    {
+        OnLanguageChange.InvokeAsync(e);
+    }
+
+}
+

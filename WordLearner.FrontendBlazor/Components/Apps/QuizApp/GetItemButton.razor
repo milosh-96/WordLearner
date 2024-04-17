@@ -1,0 +1,15 @@
+﻿@rendermode InteractiveServer
+<button @onclick="ButtonClicked">@Text</button>
+
+@code {
+    [Parameter]
+    public string Text { get; set; } = "Get";
+
+    [Parameter]
+    public EventCallback OnButtonClick { get; set; }
+
+    public void ButtonClicked(MouseEventArgs e)
+    {
+        OnButtonClick.InvokeAsync();
+    }
+}

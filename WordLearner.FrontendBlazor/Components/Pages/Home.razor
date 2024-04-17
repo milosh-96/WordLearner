@@ -1,85 +1,8 @@
 ﻿@page "/"
-@using WordLearner.Domain
-@using WordLearner.Domain.Services
-@using WordLearner.Domain.WordAggregate
-@inject IWordService wordService
-@inject ILanguageService languageService
-@rendermode InteractiveServer
+
 <PageTitle>Home - Word Learn</PageTitle>
 
 <article>
     <h2>Welcome!</h2>
-    <div>
-        What this word means?
-    </div>
-
-    @{
-       // TODO: create a component for getting a new word
-    }
-    @if(Word != null)
-    {
-        <p style="display:block">
-            <em>click on word to check answer; click again to hide answer</em>
-        </p>
-        <details style="padding-inline:32px;min-height:50px">
-            <summary>
-                <h3 style="margin:0">@Word.Content</h3>
-            </summary>
-            <hr />
-            <p style="font-size:1.2rem">
-                @Word.TargetWord.Content
-            </p>
-            
-        </details>
-        <button @onclick="GetWord">Get Another</button>
-    }
-    else
-    {
-        <p>This is odd. Anyway, click to get your word.</p>
-        <button @onclick="GetWord">Get Word!</button>
-    }
-    <hr />
-    
+    <WordLearner.FrontendBlazor.Components.Apps.QuizApp.QuizAppShell></WordLearner.FrontendBlazor.Components.Apps.QuizApp.QuizAppShell>
 </article>
-
-<aside>
-    <label>Choose language</label>
-    @if(Languages.Count == 0)
-    {
-        <p>Please wait...</p>
-    }
-    else
-    {
-        <select @onchange="ChangeLanguage">
-            @foreach(var language in Languages)
-            {
-                <option value="@language.Code">@language.Name</option>
-            }
-        </select>
-    }
-</aside>
-
-@code {
-    public List<Language> Languages { get; set; } = new List<Language>();
-    public Translation? Word { get; set; }
-    public string Language { get; set; } = "de";
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if(!firstRender) { return; }
-        Word = wordService.GetRandomWord(Language);
-        Languages = languageService.GetLanguagesWithout("en").ToList();
-        this.StateHasChanged();
-    }
-    public void GetWord()
-    {
-        Word = wordService.GetRandomWord(Language);
-
-    }
-
-    public void ChangeLanguage(ChangeEventArgs e)
-    {
-        this.Language = (string)e.Value;
-        GetWord();
-    }
-}

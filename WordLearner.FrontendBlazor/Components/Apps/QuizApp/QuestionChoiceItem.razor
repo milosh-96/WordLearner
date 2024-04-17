@@ -1,0 +1,18 @@
+﻿@if(Choice != null)
+{
+    <button>
+        @Choice
+    </button>
+}
+@code {
+    [Parameter]
+    public string Choice { get; set; }
+    
+    [Parameter]
+    public List<string> Choices { get; set; }
+    
+    [Parameter]
+    public int CorrectChoiceIndex { get; set; }
+    
+  
+}
