@@ -20,7 +20,10 @@
     public async Task CheckAnswer()
     {
         StyleClasses = Correct ? "correct bounce-animation " : "incorrect shake-x-animation ";
-        await Task.Delay(3000);
-        await OnPickedChoice.InvokeAsync(Correct);
+        if(Correct)
+        {
+            await Task.Delay(3000);
+            await OnPickedChoice.InvokeAsync(Correct);
+        }
     }
 }

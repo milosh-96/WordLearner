@@ -5,15 +5,14 @@
     <div class="question-choices">
         @foreach (var choice in Question.Choices)
         {
+            var key = Guid.NewGuid().ToString();
             var correct = Question.Choices.IndexOf(choice) == Question.CorrectChoiceIndex;
-            <QuestionChoiceItem @key=Question.Choices.IndexOf(choice) OnPickedChoice="OnPickedChoice" Correct="correct" Choice="@choice"></QuestionChoiceItem>
+            <QuestionChoiceItem @key="key" OnPickedChoice="OnPickedChoice" Correct="correct" Choice="@choice"></QuestionChoiceItem>
         }
     </div>
 }
 
 @code {
-    // todo: clear choices on get another click //
-
     [Parameter]
     public EventCallback<bool> OnPickedChoice { get; set; }
     [Parameter]
