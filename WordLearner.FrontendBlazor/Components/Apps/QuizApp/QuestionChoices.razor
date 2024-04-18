@@ -1,4 +1,5 @@
 ﻿@using WordLearner.Domain.WordAggregate
+@rendermode InteractiveServer
 @if(Question != null)
 {
     <div class="question-choices">
@@ -11,6 +12,8 @@
 }
 
 @code {
+    // todo: clear choices on get another click //
+
     [Parameter]
     public EventCallback<bool> OnPickedChoice { get; set; }
     [Parameter]

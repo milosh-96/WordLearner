@@ -11,17 +11,13 @@
         What this word means?
     </div>
 
-    @{
-        // TODO: create a component for getting a new word
-    }
+    
     @if (Word != null)
     {
         <p style="display:block">
             <em>click on word to get choices</em>
         </p>
-        @{
-            // todo: clear choices on get another click //
-        }
+       
         <QuestionItem OnPickedChoice="HandlePickedChoice" Question="Question"></QuestionItem>
         <GetItemButton OnButtonClick="HandleGetAnother" Text="Get Another"></GetItemButton>
     }
