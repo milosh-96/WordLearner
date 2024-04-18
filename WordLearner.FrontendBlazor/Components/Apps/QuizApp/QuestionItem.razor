@@ -5,15 +5,17 @@
         <summary>
             <h3 style="margin:0">@Question.Content</h3>
         </summary>
-        <QuestionChoices Question="@Question"></QuestionChoices>
+        <QuestionChoices OnPickedChoice="OnPickedChoice" Question="Question"></QuestionChoices>
     </details>
 
 }
 else
 {
-    <div>there was an error!</div>
+    <div style="font-size:1.5rem">Please Wait...</div>
 }
 @code {
+    [Parameter]
+    public EventCallback<bool> OnPickedChoice { get; set; }
     [Parameter]
     public Question Question { get; set; }
 

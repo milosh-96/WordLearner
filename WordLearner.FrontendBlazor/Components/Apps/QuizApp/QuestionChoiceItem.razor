@@ -1,18 +1,26 @@
-﻿@if(Choice != null)
+﻿@rendermode InteractiveServer
+@if(Choice != null)
 {
-    <button>
+    <button class="@StyleClasses question-choice-item" @onclick="async ()=>{await CheckAnswer();}">
         @Choice
     </button>
 }
 @code {
     [Parameter]
+    public EventCallback<bool> OnPickedChoice { get; set; }
+
+    [Parameter]
     public string Choice { get; set; }
-    
+
     [Parameter]
-    public List<string> Choices { get; set; }
-    
-    [Parameter]
-    public int CorrectChoiceIndex { get; set; }
-    
-  
+    public bool Correct { get; set; } = false;
+
+    public string StyleClasses { get; set; } = "";
+
+    public async Task CheckAnswer()
+    {
+        StyleClasses = Correct ? "correct bounce-animation " : "incorrect shake-x-animation ";
+        await Task.Delay(3000);
+        await OnPickedChoice.InvokeAsync(Correct);
+    }
 }

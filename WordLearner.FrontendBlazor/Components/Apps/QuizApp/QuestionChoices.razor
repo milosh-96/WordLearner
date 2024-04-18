@@ -1,15 +1,18 @@
 ﻿@using WordLearner.Domain.WordAggregate
 @if(Question != null)
 {
-    <div style="display:flex;column-gap:16px">
+    <div class="question-choices">
         @foreach (var choice in Question.Choices)
         {
-            <QuestionChoiceItem Choice="@choice" Choices="Question.Choices" CorrectChoiceIndex="Question.CorrectChoiceIndex"></QuestionChoiceItem>
+            var correct = Question.Choices.IndexOf(choice) == Question.CorrectChoiceIndex;
+            <QuestionChoiceItem @key=Question.Choices.IndexOf(choice) OnPickedChoice="OnPickedChoice" Correct="correct" Choice="@choice"></QuestionChoiceItem>
         }
     </div>
 }
 
 @code {
-        [Parameter]
-        public Question Question { get; set; }
+    [Parameter]
+    public EventCallback<bool> OnPickedChoice { get; set; }
+    [Parameter]
+    public Question Question { get; set; }
 }

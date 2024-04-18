@@ -17,15 +17,18 @@
     @if (Word != null)
     {
         <p style="display:block">
-            <em>click on word to check answer; click again to hide answer</em>
+            <em>click on word to get choices</em>
         </p>
-        <QuestionItem Question="Question"></QuestionItem>
-        <GetItemButton OnButtonClick="GetWord" Text="Get Another"></GetItemButton>
+        @{
+            // todo: clear choices on get another click //
+        }
+        <QuestionItem OnPickedChoice="HandlePickedChoice" Question="Question"></QuestionItem>
+        <GetItemButton OnButtonClick="HandleGetAnother" Text="Get Another"></GetItemButton>
     }
     else
     {
         <p>This is odd. Anyway, click to get your word.</p>
-        <GetItemButton OnButtonClick="GetWord" Text="Get"></GetItemButton>
+        <GetItemButton OnButtonClick="HandleGetAnother" Text="Get"></GetItemButton>
     }
     <hr />
 
@@ -53,7 +56,7 @@
         this.StateHasChanged();
     }
     public void GetWord()
-    {
+    {  
         Word = wordService.GetRandomWord(Language);
         var choices = wordService.GetWords().OrderBy(r => Guid.NewGuid()).Take(3).Select(x=>x.Content).ToList();
         Question = questionService.GenerateQuestion(Word.Content, Word.TargetWord.Content, choices);
@@ -63,5 +66,21 @@
     {
         this.Language = (string)e.Value;
         GetWord();
+    }
+
+    public void HandleGetAnother()
+    {
+        Question = null;
+        this.StateHasChanged();
+        GetWord();
+    }
+    public void HandlePickedChoice(bool isCorrect)
+    {
+        if(isCorrect)
+        {
+            Question = null;
+            this.StateHasChanged();
+            GetWord();
+        }
     }
 }

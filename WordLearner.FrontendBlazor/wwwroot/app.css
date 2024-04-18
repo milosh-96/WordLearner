@@ -1,3 +1,28 @@
+@import "https://unpkg.com/open-props";
+
+.float-animation {
+    animation: var(--animation-float);
+    animation-duration:1s;
+}
+.pulse-animation {
+    animation: var(--animation-pulse);
+    animation-duration:1s;
+}
+.bounce-animation {
+    animation: var(--animation-bounce);
+    animation-duration: 1s;
+}
+.shake-x-animation {
+    animation: var(--animation-shake-x);
+    animation-duration: 1s;
+}
+button.correct {
+    background:green;
+}
+button.incorrect {
+    background:red;
+}
+
 #blazor-error-ui {
     background: lightyellow;
     bottom: 0;
@@ -55,4 +80,21 @@ header.header {
 }
 nav a {
   color:#fff;
+}
+
+.question-choices {
+    display:flex;
+    flex-direction:column;
+    row-gap:16px;
+}
+
+
+@media screen and (min-width:768px)
+{
+    .question-choices {
+        flex-direction:row;
+        column-gap:16px;
+        row-gap:0px;
+    }
+   
 }

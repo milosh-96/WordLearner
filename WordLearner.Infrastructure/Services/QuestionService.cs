@@ -8,13 +8,13 @@ using WordLearner.Domain.WordAggregate;
 
 namespace WordLearner.Infrastructure.Services
 {
-    internal class QuestionService : IQuestionService
+    public class QuestionService : IQuestionService
     {
         public Question GenerateQuestion(string content, string correctChoice, IEnumerable<string> choices)
         {
             var newChoices = choices.ToList();
             newChoices.Add(correctChoice);
-            var correctIndex = new Random((int)DateTime.Today.Ticks).Next(0, newChoices.Count);
+            var correctIndex = new Random((int)DateTime.UtcNow.Ticks).Next(0, newChoices.Count);
 
             var temp = newChoices[correctIndex];
 
