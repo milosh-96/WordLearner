@@ -7,7 +7,7 @@
         {
             var key = Guid.NewGuid().ToString();
             var correct = Question.Choices.IndexOf(choice) == Question.CorrectChoiceIndex;
-            <QuestionChoiceItem @key="key" OnPickedChoice="OnPickedChoice" Correct="correct" Choice="@choice"></QuestionChoiceItem>
+            <QuestionChoiceItem @key="key" OnAnswer="OnAnswer"  OnPickedChoice="OnPickedChoice" Correct="correct" Choice="@choice"></QuestionChoiceItem>
         }
     </div>
 }
@@ -15,6 +15,8 @@
 @code {
     [Parameter]
     public EventCallback<bool> OnPickedChoice { get; set; }
+    [Parameter]
+    public EventCallback<bool> OnAnswer { get; set; }
     [Parameter]
     public Question Question { get; set; }
 }

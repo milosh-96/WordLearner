@@ -1,14 +1,15 @@
 ﻿@rendermode InteractiveServer
 @if(Choice != null)
 {
-    <button class="@StyleClasses question-choice-item" @onclick="async ()=>{await CheckAnswer();}">
+    <button class="@StyleClasses question-choice-item" @onclick="async ()=>{await MarkCorrect(); await CheckAnswer();}">
         @Choice
     </button>
 }
 @code {
     [Parameter]
     public EventCallback<bool> OnPickedChoice { get; set; }
-
+    [Parameter]
+    public EventCallback<bool> OnAnswer { get; set; }
     [Parameter]
     public string Choice { get; set; }
 
@@ -17,9 +18,14 @@
 
     public string StyleClasses { get; set; } = "";
 
+    public async Task MarkCorrect()
+    {
+        await OnAnswer.InvokeAsync(Correct);
+    }
     public async Task CheckAnswer()
     {
-        StyleClasses = Correct ? "correct bounce-animation " : "incorrect shake-x-animation ";
+        StyleClasses = Correct ? "correct bounce-animation" : "incorrect shake-x-animation";
+        this.StateHasChanged();
         if(Correct)
         {
             await Task.Delay(3000);

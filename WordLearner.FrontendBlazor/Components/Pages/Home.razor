@@ -1,8 +1,19 @@
 ﻿@page "/"
-
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
 <PageTitle>Home - Word Learn</PageTitle>
 
 <article>
-    <h2>Welcome!</h2>
+    <AuthorizeView>
+        <Authorized>Welcome </Authorized>
+        <NotAuthorized>
+            <a href="/Account/Login">Login to get personalized questions</a>
+        </NotAuthorized>
+    </AuthorizeView>
+    <hr />
     <WordLearner.FrontendBlazor.Components.Apps.QuizApp.QuizAppShell></WordLearner.FrontendBlazor.Components.Apps.QuizApp.QuizAppShell>
 </article>
+
+@code {
+    
+}

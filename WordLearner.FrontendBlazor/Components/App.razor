@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Components.Authorization
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -19,6 +20,20 @@
                         <a href="/">Word Learn</a>
                     </li>
                 </ul>
+                <ul>
+                    <CascadingAuthenticationState>
+                        <AuthorizeView>
+                            <Authorized>
+                                <li><a href="Account/Logout">Log out</a></li>
+                            </Authorized>
+                            <NotAuthorized>
+                                <li>
+                                    <a href="Account/Login?redirectUri=/">Log in</a>
+                                </li>
+                            </NotAuthorized>
+                        </AuthorizeView>
+                    </CascadingAuthenticationState>
+                </ul>
             </nav>
         </div>
     </header>
@@ -27,3 +42,8 @@
 </body>
 
 </html>
+
+
+@code {
+   
+                            }

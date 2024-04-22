@@ -86,8 +86,28 @@ nav a {
     display:flex;
     flex-direction:column;
     row-gap:16px;
+    justify-content:center;
+    margin-block:16px;
 }
 
+.question-item {
+    margin: 0;
+    padding: 32px;
+    border-radius: 16px;
+    border-color:#003366;
+    border-style:solid;
+    border-width:4px;
+    color: #003366;
+    margin-block: 16px
+}
+.question-item.correct {
+    color:green;
+    border-color:green;
+}
+.question-item.incorrect {
+    color:red;
+    border-color:red;
+}
 
 @media screen and (min-width:768px)
 {
@@ -95,6 +115,11 @@ nav a {
         flex-direction:row;
         column-gap:16px;
         row-gap:0px;
+    }
+    #quiz-app-shell {
+        width:50%;
+        margin:0 auto;
+        text-align:center;
     }
    
 }

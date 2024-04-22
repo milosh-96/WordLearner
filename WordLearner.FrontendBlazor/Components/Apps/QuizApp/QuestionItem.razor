@@ -2,12 +2,11 @@
 @using WordLearner.Domain.WordAggregate
 @if(Question != null)
 {
-    <details style="padding-inline:32px;min-height:50px">
-        <summary>
-            <h3 style="margin:0">@Question.Content</h3>
-        </summary>
-        <QuestionChoices OnPickedChoice="OnPickedChoice" Question="Question"></QuestionChoices>
-    </details>
+    <div style="padding-inline:32px;min-height:50px">
+        <em>What this word means?</em>
+        <h3 class="question-item @AnswerStateClass">@Question.Content</h3>
+        <QuestionChoices OnAnswer="HandleAnswer" OnPickedChoice="OnPickedChoice" Question="Question"></QuestionChoices>
+    </div>
 
 }
 else
@@ -18,6 +17,33 @@ else
     [Parameter]
     public EventCallback<bool> OnPickedChoice { get; set; }
     [Parameter]
+    public EventCallback<bool> OnAnswer { get; set; }
+    [Parameter]
     public Question Question { get; set; }
 
+    public string AnswerStateClass { get; set; } = "";
+
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(!firstRender)
+        {
+            AnswerStateClass = "";
+        }
+    }
+
+    public async Task HandleAnswer(bool correct)
+    {
+        if(correct)
+        {
+            AnswerStateClass = "correct";
+        }
+        else
+        {
+            AnswerStateClass = "incorrect";
+            await Task.Delay(3000);
+            AnswerStateClass = "";
+        }
+        
+    }
 }

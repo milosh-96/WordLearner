@@ -5,19 +5,10 @@
 @inject IQuestionService questionService
 @rendermode InteractiveServer
 
-<section>
-    <h3 class="sr-only">Word Game</h3>
-    <div>
-        What this word means?
-    </div>
-
-    
+<section id="quiz-app-shell">
+    <h3 class="sr-only">Word Game</h3>    
     @if (Word != null)
     {
-        <p style="display:block">
-            <em>click on word to get choices</em>
-        </p>
-       
         <QuestionItem OnPickedChoice="HandlePickedChoice" Question="Question"></QuestionItem>
         <GetItemButton OnButtonClick="HandleGetAnother" Text="Get Another"></GetItemButton>
     }
