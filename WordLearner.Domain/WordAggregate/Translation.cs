@@ -10,7 +10,9 @@ namespace WordLearner.Domain.WordAggregate
     {
         public int Id { get; set; }
         public string Content { get; set; } // voz // train
+        public int TargetWordId { get; set; } // bahn (de) // bahn (de)
         public Word TargetWord { get; set; } // bahn (de) // bahn (de)
+        public int LanguageId { get; set; } // sr // en
         public Language Language { get; set; } // sr // en
     }
 }

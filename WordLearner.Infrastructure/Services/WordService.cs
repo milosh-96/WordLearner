@@ -31,9 +31,9 @@ namespace WordLearner.Infrastructure.Services
             int randomIdIndex = new Random().Next(0,(ids.Count-1)); // generate random index, -1 to prevent out of range
 
             var translations = context.Translations
+                .Where(x => x.LanguageId == language.Id)
                 .Include(x => x.Language)
                 .Include(x => x.TargetWord)
-                .Where(x=>x.Language==language)
                 .ToList();
 
            return translations[randomIdIndex]; // pick all words from translations of selected language and use random index //
